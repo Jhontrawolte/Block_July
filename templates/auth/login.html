@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<dev>
+    <h1>ВХОД</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{form.email}}
+        {{form.password}}
+        <button typre="sumbit">Войти</button>
+    </form>    
+</dev>
+{% endblock  %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div>
+    {% if user.is_authenticated %}
+    <a href="{% url 'new-post' %}"><button>{% trans 'Новый пост' %}</button></a>
+    {% endif %}
+    {% for post in posts %}
+
+    <div class="post">
+        <h1>{{post.author.username}}</h1>
+        {% if user.is_authenticated and user == post.author or user.is_superuser %}
+            <a href="{% url 'edit_post' pid=post.pk %}"><button>{% trans 'Редактироваить' %}</button></a>
+            <a href="{% url 'delete_post' pid=post.pk %}"><button>{% trans 'Удалить' %}</button></a>
+        {% endif %}
+        {% if  post.att %}
+            <img src= "{{ post.att.0.file.url}}" width= "300px" class = "img">
+        {% endif %}
+
+        <div class="post_content">
+            <a href="{% url 'post_details' pid=post.pk %}">
+                <h1>{{post.title}}</h1>
+            </a>
+            <p class = "post.content">{{post.content}}</p>
+            <p class = "post.time_stamp">{{post.time_stamp}}</p>
+            {% if post.edited %}
+                <p>{% trans 'Изменено' %}</p>
+            {% endif %}
+        </div>
+        <div> 
+            {% if post.comments_pin %}
+                {% for comment in post.comments_pin %}
+                <div style="border-top: 1px brown solid">
+                    <h1>{{comment.author.username}}</h1>
+                    <h3 style= "font-size: small; font-style: italic;">{{comment.content}}<h3>
+                    <p style= "font-size: small; font-style: italic;">{{comment.time_stamp}} ({% trans 'Закреплен' %})<p>
+                    
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% for comment in post.comments_reg %}
+                <div style="border-top: 1px brown solid">
+                    <h1>{{comment.author.username}}</h1>
+                    <h3 style= "font-size: small; font-style: italic;">{{comment.content}}<h3>
+                    <p style= "font-size: small; font-style: italic;">{{comment.time_stamp}}<p>
+                </div> 
+            {% endfor %}
+        </div> 
+    </div>
+
+    {% endfor %}
+</div>
+{% endblock  %}

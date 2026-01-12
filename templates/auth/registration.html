@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<dev>
+    <h1>Регистрация</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{form.username}}
+        {{form.email}}
+        {{form.password1}}
+        {{form.password2}}
+        <button typre="sumbit">Зарегистрироваться</button>
+    </form>    
+</dev>
+
+
+{% endblock %}
+
+
+
